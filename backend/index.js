@@ -11,6 +11,9 @@ const app= express();
 
 const {notFound, errorHandler}= require('./middleware/errorHandlers');
 
+//routes
+const userRoutes = require("./routes/userRoutes");
+
 dotenv.config()
 
 //middlewares
@@ -19,6 +22,9 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan("common"));
 app.use(express.urlencoded({ extended: false }));
+
+
+app.use("/api/user", userRoutes);
 
 
 app.use(notFound);

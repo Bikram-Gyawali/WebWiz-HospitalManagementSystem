@@ -26,8 +26,14 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/user", userRoutes);
 app.use("/api/userAppointment", appointmentRoutes);
+app.use("/api/reports", userReports);
+
+// connect to data base
+connectDb();
 
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(process.env.PORT, () => console.log(`SERVER UP AND RUNNING`));
+app.listen(process.env.PORT, () => {
+  console.log("SERVER UP AND RUNNING".bold.cyan);
+});

@@ -1,20 +1,8 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
 
-const hospitalSchema = new mongoose.Schema(
+const userSchema = mongoose.Schema(
   {
     name: {
-      type: String,
-      required: true,
-    },
-    address: {
-      type: String,
-    },
-    contact1: {
-      type: String,
-      required: true,
-    },
-    contact2: {
       type: String,
       required: true,
     },
@@ -24,119 +12,41 @@ const hospitalSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      min: 8,
       required: true,
     },
-    services: [
-      {
-        topic: {
-          type: String,
-        },
-        desc: String,
-        serviceCharge: Number,
-        serviceImg: String,
-      },
-    ],
-    hospitalImages: [
-      {
-        img: {
-          type: String,
-        },
-      },
-    ],
-    hospitalProfilePics: {
+    dob: {
       type: String,
     },
-    hospitalDescription: {
+    age: {
+      type: Number,
+    },
+    contacts: {
+      type: Number,
+    },
+    appointmentsmade: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Appointments",
+    },
+    reports: {
       type: String,
     },
-    doctors: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Doctors",
-      },
-    ],
-
-    emergencyContacts: [
-      {
-        name: {
-          type: String,
-        },
-        number: {
-          type: Number,
-        },
-      },
-    ],
-    ambulance: Number,
-    beds: {
-      total: Number,
-      occupied: Number,
-      empty: Number,
+    isDisabled: {
+      type: Boolean,
     },
-    bedTypes: {
-      icu: Number,
-      ventilator: Number,
-      other: Number,
-    },
-    vaccancy: [
+    medicines: [
       {
-        status: Boolean,
-        position: String,
-        amount: Number,
         desc: String,
+        disease: String,
+        date1: [Date],
       },
     ],
-    appointments: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Appointments",
-      },
-    ],
-
-    reviews: [
-      {
-        comment: String,
-        userId: String,
-        ratings: {
-          type: Number,
-          max: 5,
-        },
-      },
-    ],
-    patient: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Users",
-      },
-    ],
-    events: [
-      {
-        eventName: String,
-        date: Date,
-        desc: String,
-        eventImg: String,
-      },
-    ],
-    // subscription:{
-    // prototype ma rakhni last ma time pugyo vani inegrate garni
+    // funds: {
+    //   status: Boolean,
+    //   default: false
     // }
   },
-  { timestamps: true }
-);
-
-hospitalSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    // Password is not modified
-    next();
+  {
+    timestamps: true,
   }
-  // Password is modified
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
-
-hospitalSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
-
-module.exports = mongoose.model("Hospitals", hospitalSchema);
+);
+module.exports = mongoose.model("Users", userSchema);

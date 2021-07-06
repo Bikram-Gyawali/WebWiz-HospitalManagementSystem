@@ -14,6 +14,7 @@ const { notFound, errorHandler } = require("./middleware/errorHandlers");
 
 //routes
 const userRoutes = require("./routes/userRoutes");
+const hospitalRoutes = require("./routes/hospitalRoutes");
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/user", userRoutes);
 app.use("/api/userAppointment", appointmentRoutes);
+app.use("/api/hospitals", hospitalRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

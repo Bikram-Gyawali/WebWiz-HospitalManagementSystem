@@ -4,3 +4,4 @@ export const fonts = {
     bold: 700,
     black: 900
 }
+

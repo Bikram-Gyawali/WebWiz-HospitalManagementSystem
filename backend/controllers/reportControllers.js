@@ -11,7 +11,7 @@ const saveReports = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
     console.log(req.file);
     if (user.reports === "") {
-      const newUser = await User.findByIdAndUpdate(req.params.id, {
+      await User.findByIdAndUpdate(req.params.id, {
         reports: req.file.filename,
       });
     } else {
@@ -19,18 +19,18 @@ const saveReports = asyncHandler(async (req, res) => {
         __dirname,
         `../uploads/reports/${user.reports}`
       );
-      fs.unlinkSync(filePath, (err) => {
-        //delets previous file
-        if (err) throw new Error(err);
-      });
+    //   fs.unlinkSync(filePath, (err) => {
+    //     //delets previous file
+    //     if (err) throw new Error(err);
+    //   });
       await User.findByIdAndUpdate(req.params.id, {
         reports: req.file.filename,
       });
     }
     res.status(200).json(user);
   } catch (error) {
-    res.status(400);
-    throw new Error(error);
+    // res.status(400);
+    // throw new Error(error);
   }
 });
 

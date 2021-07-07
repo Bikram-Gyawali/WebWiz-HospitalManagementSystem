@@ -4,8 +4,10 @@ import Card from 'components/HospitalDashboard/CardLayout'
 import AddButton from 'assets/images/add.svg'
 import EditButton from 'assets/images/edit.svg'
 import { fonts } from 'fonts';
-
-
+import { useState } from 'react'
+import AddEventsForm from 'components/HospitalDashboard/AddEventsForm'
+import { useSelector } from 'react-redux';
+import returnMonthString from 'utils/returnMonth';
 
 const Title = styled.div`
     font-size: 28px;
@@ -71,7 +73,14 @@ const EventHeadLeft = styled.div`
 const EventHeadRight = styled.div``
 const EventBody = styled.div``
 
-const index = () => {
+const Index = () => {
+
+    const [openEditForm, setOpenEditForm] = useState(false)
+    const [openAddForm, setOpenAddForm] = useState(false)
+    const { hospitalInfo } = useSelector((state) => {
+        return state.hospitalManipulation;
+    });
+
     return (
         <Card>
             <CardHeader>
@@ -79,40 +88,50 @@ const index = () => {
                     Events
                 </Title>
                 <Icons>
-                    <IconButton onClick={(e) => console.log("Click")}>
+                    <IconButton onClick={(e) => setOpenAddForm(true)}>
                         <img src={AddButton} alt={"Add Button "} />
                     </IconButton>
                 </Icons>
             </CardHeader>
             <Line />
             <CardBody>
-                <EventContainer>
+                {
+                    hospitalInfo.events.map((event, index) => (
+                        <>
+                            <EventContainer key={event._id}>
+                                <EventHead>
+                                    <EventHeadLeft>
+                                        <EventName>{event.eventName}</EventName>
+                                        <EventDate>({returnMonthString(new Date(event.date).getMonth())} - {new Date(event.date).getDay()})</EventDate>
+                                    </EventHeadLeft>
+                                    <EventHeadRight>
+                                        <IconButton onClick={(e) => setOpenEditForm(true)}>
+                                            <img src={EditButton} alt={"Edit Button "} />
+                                        </IconButton>
+                                    </EventHeadRight>
+                                </EventHead>
+                                <EventBody>
+                                    {event.desc}
+                                </EventBody>
+                            </EventContainer>
+                            {
 
-                    <EventHead>
-                        <EventHeadLeft>
-                            <EventName>Event Number 1</EventName>
-                            <EventDate>(May 8 - May 21)</EventDate>
-                        </EventHeadLeft>
-                        <EventHeadRight>
-                            <IconButton onClick={(e) => console.log("Click")}>
-                                <img src={EditButton} alt={"Edit Button "} />
-                            </IconButton>
-                        </EventHeadRight>
-                    </EventHead>
-                    <EventBody>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. At pharetra, id pretium aliquet ac orci enim dolor. Scelerisque parturient at leo ornare a massa varius eget velit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. At pharetra, id pretium aliquet ac orci enim dolor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. At pharetra, id pretium aliquet ac orci enim dolor. Scelerisque parturient at leo ornare a massa varius eget velit.
-                    </EventBody>
-                </EventContainer>
-                <Line />
-                <EventContainer>
+                               index < hospitalInfo.events.length - 1  && <Line />
+                            }
+                        </>
+                    ))
+                }
+
+
+                {/* <EventContainer>
 
                     <EventHead>
                         <EventHeadLeft>
                             <EventName>Event Number 2</EventName>
-                            <EventDate>(May 8 - May 21)</EventDate>
+                            <EventDate>May 25</EventDate>
                         </EventHeadLeft>
                         <EventHeadRight>
-                            <IconButton onClick={(e) => console.log("Click")}>
+                            <IconButton onClick={(e) => setOpenEditForm(true)}>
                                 <img src={EditButton} alt={"Edit Button "} />
                             </IconButton>
                         </EventHeadRight>
@@ -120,10 +139,12 @@ const index = () => {
                     <EventBody>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. At pharetra, id pretium aliquet ac orci enim dolor. Scelerisque parturient at leo ornare a massa varius eget velit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. At pharetra, id pretium aliquet ac orci enim dolor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. At pharetra, id pretium aliquet ac orci enim dolor. Scelerisque parturient at leo ornare a massa varius eget velit.
                     </EventBody>
-                </EventContainer>
+                </EventContainer> */}
             </CardBody>
+            <AddEventsForm open={openAddForm} setOpen={setOpenAddForm} type="add" />
+            <AddEventsForm open={openEditForm} setOpen={setOpenEditForm} type="edit" />
         </Card>
     )
 }
 
-export default index
+export default Index

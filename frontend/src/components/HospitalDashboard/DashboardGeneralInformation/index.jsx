@@ -1,8 +1,11 @@
 import styled from 'styled-components'
 import { colors } from "colors";
 import Card from 'components/HospitalDashboard/CardLayout'
+import EditProfileForm from 'components/HospitalDashboard/EditProfileForm'
 import EditButton from 'assets/images/edit.svg'
 import { fonts } from 'fonts';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 
 
@@ -61,7 +64,23 @@ const CardItem = styled.div`
 const CardBodyRight = styled.div``
 const CardBodyLeft = styled.div``
 
-const index = () => {
+
+
+const Index = () => {
+
+    const [open, setOpen] = useState(false);
+
+    const {hospitalInfo} = useSelector((state) => {
+        return state.hospitalManipulation;
+    });
+    console.log(hospitalInfo)
+
+
+    useEffect(() => {
+        console.log(open)
+    }, [open])
+    
+    const { _id, name, email, hospitalDescription } = hospitalInfo;
     return (
         <Card>
             <CardHeader>
@@ -69,7 +88,7 @@ const index = () => {
                     Account
                 </Title>
                 <Icons>
-                    <IconButton onClick={(e) => console.log("Click")}>
+                    <IconButton onClick={()=>setOpen(true)}>
                         <img src={EditButton} alt={"Edit Button "} />
                     </IconButton>
                 </Icons>
@@ -82,7 +101,7 @@ const index = () => {
                             Hospital ID
                         </CardBodyTitle>
                         <CardBodyDescription>
-                            12xsd495
+                            {_id}
                         </CardBodyDescription>
                     </CardItem>
                     <CardItem>
@@ -90,7 +109,7 @@ const index = () => {
                             Name
                         </CardBodyTitle>
                         <CardBodyDescription>
-                            Ayush Mainali
+                            {name}
                         </CardBodyDescription>
                     </CardItem>
                     <CardItem>
@@ -98,7 +117,7 @@ const index = () => {
                             Email
                         </CardBodyTitle>
                         <CardBodyDescription>
-                            test@test.com
+                            {email}
                         </CardBodyDescription>
                     </CardItem>
                 </CardBodyLeft>
@@ -108,21 +127,23 @@ const index = () => {
                             Description
                         </CardBodyTitle>
                         <CardBodyDescription>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa minima totam at ratione sint architecto eum dolor odio.
+                            {hospitalDescription}
                         </CardBodyDescription>
                     </CardItem>
-                    <CardItem>
+                    {/* <CardItem>
                         <CardBodyTitle>
                             Services Provided
                         </CardBodyTitle>
                         <CardBodyDescription>
                             Ventilator, Covid Checkup, Spinal Surgery, Next Covid Virus, AIDS, Third Degree Cancer Treatment
                         </CardBodyDescription>
-                    </CardItem>
+                    </CardItem> */}
                 </CardBodyRight>
             </CardBody>
+
+            <EditProfileForm open={open} setOpen={ setOpen }/>
         </Card>
     )
 }
 
-export default index
+export default Index

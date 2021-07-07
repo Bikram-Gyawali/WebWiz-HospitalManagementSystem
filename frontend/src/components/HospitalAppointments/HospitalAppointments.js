@@ -30,7 +30,7 @@ function HospitalAppointments() {
         const { data } = await axios.get(
           `${local}/userAppointment/${id}/approvedList`
         );
-        // console.log(data);
+        console.log(data);
         setApprovedList(data);
       };
       getApprovedList();

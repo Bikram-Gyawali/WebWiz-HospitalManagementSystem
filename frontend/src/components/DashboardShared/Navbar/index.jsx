@@ -85,7 +85,7 @@ function Navbar({ type, id }) {
     return state.userLogin;
   })
 
-  let responseObject = id === userLogin._id ? {...userLogin.userInfo} : {...hospitalLogin.hospitalInfo}
+  let responseObject = id === userLogin.userInfo?._id ? {...userLogin.userInfo} : {...hospitalLogin.hospitalInfo}
   console.log({responseObject})
   return (
     <Nav>

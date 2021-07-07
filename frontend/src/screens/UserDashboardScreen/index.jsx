@@ -1,47 +1,49 @@
 import React, { useState, useEffect } from "react";
-import Navbar from 'components/DashboardShared/Navbar'
-import SideBar from 'components/DashboardShared/SideBar'
-import styled from 'styled-components'
-import useGetUserData from 'hooks/useGetUserSidebarData';
+import Navbar from "components/DashboardShared/Navbar";
+import SideBar from "components/DashboardShared/SideBar";
+import styled from "styled-components";
+import useGetUserData from "hooks/useGetUserSidebarData";
 import AppointmentButton from "components/AppointmentButton/AppomntButton";
-import axios from 'axios'
+import axios from "axios";
+import UserAppointments from "components/UserAppointments/UserAppointments";
+
 import { Link } from 'react-router-dom'
 
 const FlexContainer = styled.div`
   display: flex;
   padding: 0 20px 0 0px;
-
-`
+`;
 
 const FlexRight = styled.div`
- flex: 1;
-`
+  flex: 1;
+`;
 
 const FlexLeft = styled.div`
   width: 300px;
-`
-
+`;
 
 function Userdashboard() {
   // fetch data
-  const [hospitals, sethospitals] = useState([])
+  const [hospitals, sethospitals] = useState([]);
   useEffect(() => {
-    axios.get('http://localhost:5000/api/hospitals/allHospital').then((response) => {
-      sethospitals([...response.data])
-      console.log(response)
-    })
-  }, [])
+    axios
+      .get("http://localhost:5000/api/hospitals/allHospital")
+      .then((response) => {
+        sethospitals([...response.data]);
+        console.log(response);
+      });
+  }, []);
 
   const stringifyImage = (image) => {
     let string = "";
     for (let char in image[0]) {
-      string += image[0][char]
+      string += image[0][char];
     }
     return string;
-  }
+  };
 
-  const { userId, userMenuData } = useGetUserData()
-  console.log(userMenuData, userId)
+  const { userId, userMenuData } = useGetUserData();
+  console.log(userMenuData, userId);
   return (
     <div>
       <Navbar type={"user"} id={userId} />
@@ -56,13 +58,13 @@ function Userdashboard() {
                 <div className="mx-auto text-lg mt-2 p-2 font-bold text-gray-600">
                   <h6>Hospitals and Clinics </h6>
                 </div>
+
                 <section className="text-gray-600 body-font">
                   <div className="container px-5 py-5  mx-auto">
                     <div className="flex flex-wrap -m-4">
-
                       {/* each cardstarts here */}
-                      {
-                        hospitals.length && hospitals.map(hospital => (
+                      {hospitals.length &&
+                        hospitals.map((hospital) => (
                           <div className="p-4 md:w-1/3" key={hospital._id}>
                             <div className="h-full border-4 shadow border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
                               <img
@@ -74,7 +76,8 @@ function Userdashboard() {
                                 <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
                                   Mutu Hospital
                                   <p>
-                                    Location <i className="fas fa-map-marker-alt"></i>
+                                    Location{" "}
+                                    <i className="fas fa-map-marker-alt"></i>
                                   </p>
                                 </h2>
                                 <h1 className="title-font text-lg font-medium text-gray-900 mb-3">
@@ -136,16 +139,17 @@ function Userdashboard() {
                               </div>
                             </div>
                           </div>
-                        ))
-                      }
+                        ))}
 
                       {/* card ends here */}
                     </div>
                   </div>
                 </section>
+
               </div>
             </div>
           </section>
+          <UserAppointments />
         </FlexRight>
       </FlexContainer>
     </div>

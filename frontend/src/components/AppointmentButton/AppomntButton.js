@@ -16,8 +16,8 @@ const InputGroup = styled.div`
 `
 
 function AppomntButton() {
-  const hospitalLogin = useSelector((state) => {
-    return state.hospitalLogin;
+  const userLogin = useSelector((state) => {
+    return state.userLogin;
   });
   const params = useParams();
   const name = useRef();
@@ -36,6 +36,8 @@ function AppomntButton() {
     setOpen(true);
   }
 
+  
+
   const submitAppointment = async (e) => {
     e.preventDefault();
     console.log("Submitted")
@@ -48,6 +50,7 @@ function AppomntButton() {
       time: time.current.value,
       contact: Number(contact.current.value),
       age: age.current.value,
+      patient: userLogin?.userInfo?._id ? userLogin?.userInfo?._id : ""
     };
     try {
       setIsSubmitting(true);
